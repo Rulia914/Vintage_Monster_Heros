@@ -22,6 +22,8 @@ Créez un projet sur [mockapi.io](https://mockapi.io) avec une ressource `monste
 
 Toutes les actions de l'utilisateur (ajout, modification, suppression) doivent être répercutées dans l'API. Un rechargement de la page ne doit perdre aucune donnée.
 
+ok
+
 ---
 
 ## 🧱 Architecture attendue
