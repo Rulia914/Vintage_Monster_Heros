@@ -1,8 +1,8 @@
-import MonsterList from "./components/monsterList/MonsterList";
+import MonsterList from "./components/monsterList/MonsterList.js";
 
-  window.MonsterList = new monsterList({
+  const monsterList = new MonsterList({
     el: "#app",
     title:"Vintage Monster Heros",
     apiUrl: "https://6a4f4934f45d5352b6112e4b.mockapi.io/",
   });
-  window.monsterList.render();
+  monsterList.render();

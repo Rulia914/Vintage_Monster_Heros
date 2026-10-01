@@ -11,3 +11,25 @@ import getTemplate from "./template";
         return getTemplate(this); 
     }
 }
+
+function renderTypeOptions(currentType) {
+    const MONSTER_TYPES = [
+        "Giant reptile",
+        "Alien insect",
+        "Sea serpent",
+        "Subterranean beast",
+        "Mutant ape",
+      ];
+    // S'assurer que si le monstre a un type personnalisé non présent dans la liste de base,
+    // on l'ajoute au tableau temporaire sans créer de doublon (grâce à Set ou includes)
+    const types = MONSTER_TYPES.includes(currentType) 
+      ? MONSTER_TYPES 
+      : [...MONSTER_TYPES, currentType];
+  
+    return types
+      .map(type => {
+        const isSelected = type === currentType ? 'selected' : '';
+        return `<option value="${type}" ${isSelected}>${type}</option>`;
+      })
+      .join('');
+  }
