@@ -35,4 +35,8 @@ export default class MonsterList {
         const monster = this.storeInArray(savedMonster);
         this.storeInDom(monster);
     }
+    get totalCount() {
+      return this.monsters.length;
+    }
 }
+
