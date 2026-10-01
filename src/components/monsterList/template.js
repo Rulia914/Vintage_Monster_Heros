@@ -3,7 +3,7 @@ export default function getTemplate(monsterList) {
     return `
     <header class="text-center mb-10">
     <p class="text-[var(--silver)] tracking-widest text-sm">A creature feature archive</p>
-    <h1 class="marquee text-6xl md:text-8xl my-3">Monster Archive</h1>
+    <h1 class="marquee text-6xl md:text-8xl my-3">Monster's Archives</h1>
     <p class="text-[var(--silver)] italic">
       They rose from the deep between 1950 and 1969. Someone had to keep the records.
     </p>
@@ -15,7 +15,7 @@ export default function getTemplate(monsterList) {
       <h2 class="display text-2xl mb-5 text-[var(--pearl)]">File a new creature</h2>
 
       <label class="block mb-4 text-[var(--silver)]">
-        Name
+      ${monsterList.name}
         <input type="text" class="field" placeholder="The Crawling Mass" />
       </label>
 
@@ -50,7 +50,7 @@ export default function getTemplate(monsterList) {
         <h2 class="display text-2xl">The archive</h2>
         <p class="text-[var(--silver)]">
           Creatures on file :
-          <span class="display text-2xl text-[var(--gold)]">${monsterList.totalCount}</span>
+          <span class=" data-count display text-2xl text-[var(--gold)]">${monsterList.totalCount}</span>
         </p>
       </div>
 
