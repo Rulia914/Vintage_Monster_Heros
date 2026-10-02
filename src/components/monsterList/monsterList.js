@@ -3,13 +3,13 @@ import Monster from "../monster/Monster.js";
 import getTemplate from "./template.js";
 
 export default class MonsterList {
-  constructor(data) {
+  constructor(setup) {
     // Configurer l'URL de l'API
-    DB.setApiUrl(data.apiUrl);
+    DB.setApiUrl(setup.apiUrl);
 
     // Sélectionner l'élément racine dans le DOM
-    this.domEl = document.querySelector(data.el);
-    this.title = data.title ?? "Archive of Monsters";
+    this.domEl = document.querySelector(setup.el);
+    this.title = setup.title ?? "Archive of Monsters";
     this.monsters = [];
 
     // Écouteur global pour gérer tous les clics (délégation d'événements)
@@ -35,7 +35,7 @@ export default class MonsterList {
         const yearInput = monsterRow.querySelector(".input-year");
 
         // Préparer l'objet modifiable
-        const updatedData = {
+        const updatedMonster = {
           name: nameInput.value,
           type: typeSelect.value,
           dangerLevel: Number(dangerInput.value),
@@ -46,11 +46,11 @@ export default class MonsterList {
         const monster = this.monsters.find((m) => m.id == id);
         if (monster) {
           // Mettre à jour l'objet en mémoire
-          Object.assign(monster, updatedData);
+          Object.assign(monster, updatedMonster);
 
           // Mettre à jour en BDD via l'API
           if (typeof DB.update === "function") {
-            await DB.update(id, updatedData);
+            await DB.update(id, updatedMonster);
           }
 
           // Re-rendre la ligne pour repasser en mode affichage
@@ -200,12 +200,11 @@ export default class MonsterList {
   }
 
   // Créer l'objet Monster et l'ajouter au tableau local
-  storeInArray(data) {
-    const monster = new Monster(data);
+  storeInArray(monsterData) {
+    const monster = new Monster(monsterData);
     this.monsters.push(monster);
     return monster;
   }
-
   // Insérer la ligne HTML du monstre au début du tableau et rafraîchir le compteur
   storeInDom(monster) {
     this.domEl
@@ -219,11 +218,11 @@ export default class MonsterList {
   }
 
   // Sauvegarder en BDD puis mettre à jour le tableau et le DOM
-  async store(data) {
-    const savedMonster = await DB.store(data);
-    const monster = this.storeInArray(savedMonster);
-    this.storeInDom(monster);
-  }
+async store(monsterData) {
+  const savedMonster = await DB.store(monsterData);
+  const monster = this.storeInArray(savedMonster);
+  this.storeInDom(monster);
+}
 
   // Getter pour calculer le nombre total de monstres
   get totalCount() {

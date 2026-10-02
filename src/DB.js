@@ -8,22 +8,22 @@ export default class DB {
     return response.json();
   }
   
-  static async store(data){
+  static async store(newMonster){
     const response = await fetch(this.apiUrl + "/monsters",{
       method: 'post',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data),
+      body: JSON.stringify(newMonster),
     });
     return response.json();
   }
 
-  static async update(id, data) {
+  static async update(id, changes) {
     const response = await fetch(`${this.apiUrl}/monsters/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(changes),
     });
     return await response.json();
   }

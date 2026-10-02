@@ -1,6 +1,6 @@
-import './monsterList.css';
+import "./monsterList.css";
 export default function getTemplate(monsterList) {
-    return `
+  return `
     <header class="text-center mb-10">
     <p class="text-[var(--silver)] tracking-widest text-sm">A creature feature archive</p>
     <h1 class="marquee text-6xl md:text-8xl my-3">Monster's Archives</h1>
@@ -61,18 +61,26 @@ export default function getTemplate(monsterList) {
       <div class="overflow-x-auto">
         <table class="monsters-table w-full">
           <thead>
-            <tr>
-              <th class="text-left p-3"><a href="#">Name</a></th>
-              <th class="text-left p-3"><a href="#">Type</a></th>
-              <th class="text-left p-3"><a href="#">Danger</a></th>
-              <th class="text-left p-3"><a href="#">Year</a></th>
-              <th class="text-right p-3">Actions</th>
-            </tr>
+          <tr>
+          <th class="text-left p-3">
+            <button type="button" class="btn-sort" data-sort="name">Name</button>
+          </th>
+          <th class="text-left p-3">
+            <button type="button" class="btn-sort" data-sort="type">Type</button>
+          </th>
+          <th class="text-left p-3">
+            <button type="button" class="btn-sort" data-sort="dangerLevel">Danger</button>
+          </th>
+          <th class="text-left p-3">
+            <button type="button" class="btn-sort" data-sort="year">Year</button>
+          </th>
+          <th class="text-right p-3">Actions</th>
+        </tr>
           </thead>
           <tbody>
             <!-- Ligne en mode affichage -->
 
-              ${monsterList.monsters.map((monster) => monster.render()).join('')}
+              ${monsterList.monsters.map((monster) => monster.render()).join("")}
 
           </tbody>
         </table>

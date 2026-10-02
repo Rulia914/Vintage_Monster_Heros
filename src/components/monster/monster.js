@@ -1,13 +1,14 @@
 import getTemplate from "./template.js";
 
 export default class Monster {
-    constructor (data){
-        this.id = data.id;
-        this.name = data.name;
-        this.type = data.type;
-        this.dangerLevel = data.dangerLevel;
-        this.year = data.year;
-    }
+  constructor(fields) {
+    this.id = fields.id;
+    this.name = fields.name;
+    this.type = fields.type;
+    this.dangerLevel = fields.dangerLevel;
+    this.year = fields.year;
+  }
+
 
     // Méthode de classe pour générer le HTML des options
     renderTypeOptions(currentType) {
