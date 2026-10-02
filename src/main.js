@@ -1,3 +1,4 @@
+import "./style.css";
 import MonsterList from "./components/monsterList/MonsterList.js";
 
   const monsterList = new MonsterList({

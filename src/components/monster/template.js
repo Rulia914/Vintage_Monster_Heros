@@ -1,4 +1,3 @@
-import "./monster.css";
 export default function getTemplate(monster) {
   return `  
   <tr class="monster-row" data-id="${monster.id}">

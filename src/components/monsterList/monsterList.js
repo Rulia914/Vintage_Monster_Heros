@@ -14,6 +14,14 @@ export default class MonsterList {
 
     // Écouteur global pour gérer tous les clics (délégation d'événements)
     this.domEl.addEventListener("click", async (event) => {
+      
+      // --- 0. Bouton SORT (tri par colonne) ---
+      const sortBtn = event.target.closest(".btn-sort");
+      if (sortBtn) {
+        const property = sortBtn.dataset.sort;
+        this.sortMonsters(property); // <-- La ligne d'appel
+        return;
+      }
       // --- 1. Bouton EDIT (passer en mode édition) ---
       const editBtn = event.target.closest(".btn-edit");
       if (editBtn) {
@@ -43,7 +51,7 @@ export default class MonsterList {
         };
 
         // Trouver le monstre correspondant dans le tableau local
-        const monster = this.monsters.find((m) => m.id == id);
+        const monster = this.monsters.find((m) => m.id === id);
         if (monster) {
           // Mettre à jour l'objet en mémoire
           Object.assign(monster, updatedMonster);
@@ -72,7 +80,7 @@ export default class MonsterList {
         }
 
         // 3. Suppression du tableau JavaScript
-        const index = this.monsters.findIndex((m) => m.id == id);
+        const index = this.monsters.findIndex((m) => m.id === id);
         if (index !== -1) {
           this.monsters.splice(index, 1);
         }
@@ -100,27 +108,40 @@ export default class MonsterList {
 
         // Cibler et lire la valeur de chaque champ
         const nameInput = formEl.querySelector(
-          'input[placeholder="The Crawling Mass"]'
+          '.field-name',
         );
         const typeSelect = formEl.querySelector("select");
         const dangerInput = formEl.querySelector(
-          'input[type="number"][min="1"]'
+          '.field-danger',
         );
         const yearInput = formEl.querySelector(
-          'input[type="number"][min="1950"]'
+          '.field-year',
         );
 
-        // Assembler les données du nouveau monstre
+        // Nettoyage et conversion des données saisies
+        const name = nameInput.value.trim();
+        const type = typeSelect.value.trim();
+        const dangerLevel = Number(dangerInput.value);
+        const year = Number(yearInput.value);
+
+        // Validation des données pour éviter les chaînes vides ou les NaN
+        if (!name || !type || Number.isNaN(dangerLevel) || Number.isNaN(year)) {
+          console.warn("Saisie invalide : au moins un champ est vide ou non numérique.");
+          alert("Veuillez remplir correctement tous les champs du formulaire.");
+          return; // Interrompt l'exécution si les données sont invalides
+        }
+
+        // Assembler les données du nouveau monstre validées
         const newMonsterData = {
-          name: nameInput.value,
-          type: typeSelect.value,
-          dangerLevel: Number(dangerInput.value),
-          year: Number(yearInput.value),
+          name,
+          type,
+          dangerLevel,
+          year,
         };
 
-        // Vérification dans la console
-        console.log("Données saisies :", newMonsterData);
-        this.store(newMonsterData); // Sauvegarde en BDD et mise à jour du DOM
+        await this.store(newMonsterData);
+        formEl.reset(); //remet les champs à leur état initial, y compris la liste déroulante.
+      
       }
     });
   }
@@ -162,25 +183,40 @@ export default class MonsterList {
     }
   }
 
-  // Trier les monstres selon un champ ('name', 'dangerLevel', etc.)
-  sortMonsters(property = "name", ascending = true) {
-    this.monsters.sort((a, b) => {
+  sortMonsters(property = "name") {
+    // Initialisation de l'état de tri dans l'instance si non présent
+    if (!this.currentSort) {
+      this.currentSort = { property: null, ascending: true };
+    }
+  
+    // Toggle : si on clique sur la même colonne, on inverse le sens ; sinon on remet en ascendant
+    if (this.currentSort.property === property) {
+      this.currentSort.ascending = !this.currentSort.ascending;
+    } else {
+      this.currentSort.property = property;
+      this.currentSort.ascending = true;
+    }
+  
+    const ascending = this.currentSort.ascending;
+  
+    // 1. Créer une copie du tableau pour préserver this.monsters
+    const sortedMonsters = [...this.monsters].sort((a, b) => {
       // Si c'est du texte (ex: nom, type)
       if (typeof a[property] === "string") {
         const result = a[property].localeCompare(b[property]);
         return ascending ? result : -result;
       }
-
+  
       // Si c'est un nombre (ex: danger, année)
       const result = a[property] - b[property];
       return ascending ? result : -result;
     });
-
-    // Rafraîchir l'affichage du tableau
+  
+    // 2. Rafraîchir l'affichage du tableau avec la COPIE triée
     const tbody = this.domEl.querySelector(".monsters-table tbody");
     if (tbody) {
       tbody.innerHTML = "";
-      this.monsters.forEach((monster) => {
+      sortedMonsters.forEach((monster) => {
         tbody.insertAdjacentHTML("beforeend", monster.render());
       });
     }
@@ -218,11 +254,11 @@ export default class MonsterList {
   }
 
   // Sauvegarder en BDD puis mettre à jour le tableau et le DOM
-async store(monsterData) {
-  const savedMonster = await DB.store(monsterData);
-  const monster = this.storeInArray(savedMonster);
-  this.storeInDom(monster);
-}
+  async store(monsterData) {
+    const savedMonster = await DB.store(monsterData);
+    const monster = this.storeInArray(savedMonster);
+    this.storeInDom(monster);
+  }
 
   // Getter pour calculer le nombre total de monstres
   get totalCount() {

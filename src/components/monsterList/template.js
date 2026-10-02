@@ -1,4 +1,3 @@
-import "./monsterList.css";
 export default function getTemplate(monsterList) {
   return `
     <header class="text-center mb-10">
@@ -15,30 +14,29 @@ export default function getTemplate(monsterList) {
       <h2 class="display text-2xl mb-5 text-[var(--pearl)]">File a new creature</h2>
 
       <label class="block mb-4 text-[var(--silver)]">
-      ${monsterList.name}
-        <input type="text" class="field" placeholder="The Crawling Mass" />
+      Name
+        <input type="text" class="field field-name" placeholder="The Crawling Mass" />
       </label>
 
       <label class="block mb-4 text-[var(--silver)]">
         Type
         <select class="field">
           <option>Giant reptile</option>
-          <option>Alien</option>
-          <option>Mutant</option>
-          <option>Giant insect</option>
-          <option>Robot</option>
-          <option>Deep-sea creature</option>
+          <option>Alien insect</option>
+          <option>Mutant ape</option>
+          <option>Sea serpent</option>
+          <option>Subterranean beast</option>
         </select>
       </label>
 
       <label class="block mb-4 text-[var(--silver)]">
         Danger level (1 to 5)
-        <input type="number" min="1" max="5" class="field" placeholder="3" />
+        <input type="number" min="1" max="5" class="field field-danger" placeholder="3" />
       </label>
 
       <label class="block mb-6 text-[var(--silver)]">
         Release year
-        <input type="number" min="1950" max="1969" class="field" placeholder="1957" />
+        <input type="number" min="1950" max="1969" class="field field-year" placeholder="1957" />
       </label>
 
       <button class="btn btn-lipstick btn-add w-full py-3 px-4 text-lg">Add to the archive</button>
