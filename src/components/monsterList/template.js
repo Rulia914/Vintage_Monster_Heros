@@ -41,7 +41,7 @@ export default function getTemplate(monsterList) {
         <input type="number" min="1950" max="1969" class="field" placeholder="1957" />
       </label>
 
-      <button class="btn btn-lipstick w-full py-3 px-4 text-lg">Add to the archive</button>
+      <button class="btn btn-lipstick btn-add w-full py-3 px-4 text-lg">Add to the archive</button>
     </aside>
 
     <!-- Section droite pour la liste des créatures -->
@@ -55,7 +55,7 @@ export default function getTemplate(monsterList) {
       </div>
 
       <!-- Filtre de recherche -->
-      <input type="search" class="field mb-5" placeholder="Search by name or type" />
+      <input type="search" class="input-search field mb-5" placeholder="Search by name or type" />
 
       <!-- Liste des créatures triée et filtrée -->
       <div class="overflow-x-auto">
